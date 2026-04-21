@@ -9,6 +9,7 @@ import SwiftUI
 
 struct IpoListView: View {
     
+    // Array list of mock up data
     let ipos: [Ipo] = [
         .init(symbol: "WBSA", name: "BSA Logistic Indonesia Tbk.", price: 150.00, checkpointTime: Date()),
         .init(symbol: "WBSA", name: "BSA Logistic Indonesia Tbk.", price: 150.00, checkpointTime: Date()),
@@ -18,12 +19,15 @@ struct IpoListView: View {
     
     var body: some View {
         VStack {
+            // header
             Text("Upcoming IPO")
                 .frame(maxWidth: .infinity, maxHeight: 120, alignment: .center)
                 .background(.yellow)
                 .font(.system(size: 30))
                 .bold()
                 .padding(.top, 50)
+            
+            // List of stocks
             List (ipos){ ipo in
                     HStack{
                         VStack(alignment:.leading, spacing: 10){

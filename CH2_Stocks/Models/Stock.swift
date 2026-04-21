@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct Stock: Identifiable {
     let id = UUID()
@@ -25,8 +26,8 @@ struct Stock: Identifiable {
             }
         }
         return 0
-            
-        }
+        
+    }
     
     func getLastPrice() -> Double {
         return priceHistory.last!.price
@@ -45,14 +46,42 @@ struct Stock: Identifiable {
             return .neutral
         }
     }
-
+    
+    func getStatusColor() -> Color{
+        switch getStatus() {
+        case .up:
+            return .green
+        case .down:
+            return .red
+        case .neutral:
+            return .gray
+        }
+    }
+    
+    func getStatusSymbol() -> String{
+        switch getStatus() {
+        case .up:
+            return "arrow.up"
+        case .down:
+            return "arrow.down"
+        case .neutral:
+            return "minus"
+        }
+    }
+    
     func getPercentage() -> Double {
         return 100 * (getPrice() - getOpenPrice()) / getOpenPrice()
     }
-
+    
+    func getPercentageToString() -> String{
+        
+        let percentageFormatter = NumberFormatter()
+        percentageFormatter.roundingMode = .down
+        percentageFormatter.maximumFractionDigits = 2
+        return percentageFormatter.string(for: getPercentage())!
     }
-
-
+    
+}
 struct PriceHistory: Identifiable {
     let id = UUID()
     let date: Date
