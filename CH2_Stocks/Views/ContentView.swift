@@ -14,7 +14,7 @@ struct ContentView: View {
                 HomeView()
             }
             Tab("Stocks", systemImage: "chart.line.uptrend.xyaxis") {
-                PlaceholderTab(title: "Stocks", icon: "chart.line.uptrend.xyaxis")
+                StockListView()
             }
             Tab("Portfolio", systemImage: "briefcase.fill") {
                 PlaceholderTab(title: "Portfolio", icon: "briefcase.fill")
