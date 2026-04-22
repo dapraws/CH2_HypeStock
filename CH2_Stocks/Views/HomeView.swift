@@ -167,7 +167,13 @@ struct MenuGrid: View {
                             MenuItemCard(item: item, hasArrow: true)
                         }
                         .buttonStyle(.plain)
-                    } else {
+                    } else if item.title == "Upcoming IPO"{
+                        NavigationLink(destination: IpoListView()) {
+                            MenuItemCard(item: item, hasArrow: true)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    else{
                         MenuItemCard(item: item, hasArrow: false)
                     }
                 }
