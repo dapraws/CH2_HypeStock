@@ -38,6 +38,11 @@ struct Stock: Identifiable {
     }
     
     func getStatus() -> isStatus {
+        if(getOpenPrice() == 0){
+            return .neutral
+        }
+        
+        
         if getPrice() > getOpenPrice() {
             return .up
         } else if getPrice() < getOpenPrice() {
@@ -70,6 +75,9 @@ struct Stock: Identifiable {
     }
     
     func getPercentage() -> Double {
+        if(getOpenPrice() == 0){
+            return 0
+        }
         return 100 * (getPrice() - getOpenPrice()) / getOpenPrice()
     }
     
