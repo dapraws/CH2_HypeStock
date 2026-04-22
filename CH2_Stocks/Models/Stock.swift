@@ -15,7 +15,7 @@ struct Stock: Identifiable {
     
     // buyCount
     // sellCount
-    // 
+    //
     
     
     func getOpenPrice() -> Double {
@@ -25,8 +25,8 @@ struct Stock: Identifiable {
             }
         }
         return 0
-            
-        }
+        
+    }
     
     func getLastPrice() -> Double {
         return priceHistory.last!.price
@@ -45,12 +45,12 @@ struct Stock: Identifiable {
             return .neutral
         }
     }
-
+    
     func getPercentage() -> Double {
         return 100 * (getPrice() - getOpenPrice()) / getOpenPrice()
     }
-
-    }
+    
+}
 
 
 struct PriceHistory: Identifiable {
