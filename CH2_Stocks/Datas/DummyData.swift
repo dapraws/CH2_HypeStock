@@ -10,8 +10,8 @@ import Foundation
 func makePriceHistory(startPrice: Double) -> [PriceHistory] {
     var history: [PriceHistory] = []
     var price = startPrice
-    for daysAgo in stride(from: 30, through: 0, by: -1) {
-        let date = Calendar.current.date(byAdding: .day, value: -daysAgo, to: Date()) ?? Date()
+    for daysAgo in stride(from: 30*24, through: 0, by: -1) {
+        let date = Calendar.current.date(byAdding: .hour, value: -daysAgo, to: Date()) ?? Date()
         let change = Double.random(in: -startPrice * 0.02 ... startPrice * 0.02)
         price = max(price + change, 1)
         history.append(PriceHistory(date: date, price: price))
