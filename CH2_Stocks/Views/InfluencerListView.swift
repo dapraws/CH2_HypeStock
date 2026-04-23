@@ -101,6 +101,7 @@ struct AvatarView: View {
                 .font(.system(size: size * 0.35, weight: .bold, design: .rounded))
                 .foregroundColor(Color(hex: color))
         }
+        .toolbar(.hidden, for: .tabBar)
     }
 }
 

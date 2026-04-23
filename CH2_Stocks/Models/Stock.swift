@@ -15,6 +15,7 @@ struct Stock: Identifiable {
     let priceHistory: [PriceHistory]
     var buyCount: Int = 0
     var sellCount: Int = 0
+    var lastDividend: Double = 0
     
     
     func getOpenPrice() -> Double {
@@ -84,7 +85,6 @@ struct Stock: Identifiable {
         }
     
         func getLastPriceToString() -> String{
-            print(makePriceHistory(startPrice: 6000))
             let numberFormatter = NumberFormatter()
             numberFormatter.numberStyle = .currency
             numberFormatter.currencyCode = "IDR"
