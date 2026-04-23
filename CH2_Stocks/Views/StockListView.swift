@@ -10,7 +10,7 @@ import SwiftUI
 struct StockListView: View {
     
     @State var listTitle: String = "Stock List"
-    @State var stocks: [Stock] = StockListViewModel.stocks
+    @State var stocks: [Stock] = Stock.sampleStocks
     
     var body: some View {
         NavigationStack{
@@ -45,7 +45,7 @@ struct StockListView: View {
                                 .bold()
                             Spacer()
                             VStack(alignment:.trailing, spacing: 10){
-                                Text("Rp" + String(stock.getLastPrice()))
+                                Text(stock.getLastPriceToString())
                                 Text(stock.getPercentageToString() + "%")
                                     .frame(maxWidth: 90)
                                     .background(stock.getStatusColor().opacity(0.7))

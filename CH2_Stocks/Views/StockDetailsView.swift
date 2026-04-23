@@ -26,7 +26,7 @@ struct StockDetailsView: View {
                 .foregroundColor(stock.getStatusColor())
                 .bold()
             Divider()
-            Text("Rp" + String(stock.getPrice()))
+            Text(stock.getLastPriceToString())
                 .font(Font.system(size: 30))
                 .frame(maxWidth: .infinity, maxHeight: 111)
                 .bold()
