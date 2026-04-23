@@ -10,7 +10,8 @@ import SwiftUI
 struct HomeView: View {
     
     @State var totalProfit: Double = 1_250_000
-    
+    @Binding var selectedTab: Int
+    @Binding var stockFilter: ListFilter
     let allStocks = Stock.sampleStocks
     
     var bestStock: Stock? {
@@ -49,7 +50,7 @@ struct HomeView: View {
                             }
                         }
                         
-                        MenuGrid()
+                        MenuGrid(selectedTab: $selectedTab, stockFilter: $stockFilter)
                     }
                     .padding(.horizontal, Spacing.md)
                     .padding(.bottom, Spacing.xxl)
@@ -142,7 +143,8 @@ struct MenuGrid: View {
         let icon:  String
         let color: Int
     }
-    
+    @Binding var selectedTab: Int
+    @Binding var stockFilter: ListFilter
     let items: [MenuItem] = [
         MenuItem(title: "Best Trader Influencer", icon: "person.2.fill", color: 0xFFD60A),
         MenuItem(title: "Influencer Stock Choice", icon: "star.fill", color: 0x007AFF),
@@ -172,6 +174,17 @@ struct MenuGrid: View {
                             MenuItemCard(item: item, hasArrow: true)
                         }
                         .buttonStyle(.plain)
+                    }else if item.title == "Most Buy Stocks"{
+                        Button{
+                            selectedTab = 2
+                            stockFilter = .mostBuy
+                        }label: {
+                            MenuItemCard(item: item, hasArrow: true)
+                        }
+//                        NavigationLink(destination: StockListView()) {
+//                            MenuItemCard(item: item, hasArrow: true)
+//                        }
+//                        .buttonStyle(.plain)
                     }
                     else{
                         MenuItemCard(item: item, hasArrow: false)
@@ -211,5 +224,5 @@ struct MenuItemCard: View {
 }
 
 #Preview {
-    HomeView()
+//    HomeView()
 }
