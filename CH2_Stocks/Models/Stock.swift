@@ -13,10 +13,8 @@ struct Stock: Identifiable {
     let symbol: String
     let name: String
     let priceHistory: [PriceHistory]
-    
-    // buyCount
-    // sellCount
-    //
+    var buyCount: Int = 0
+    var sellCount: Int = 0
     
     
     func getOpenPrice() -> Double {
@@ -83,6 +81,14 @@ struct Stock: Identifiable {
             percentageFormatter.roundingMode = .down
             percentageFormatter.maximumFractionDigits = 2
             return percentageFormatter.string(for: getPercentage())!
+        }
+    
+        func getLastPriceToString() -> String{
+            print(makePriceHistory(startPrice: 6000))
+            let numberFormatter = NumberFormatter()
+            numberFormatter.numberStyle = .currency
+            numberFormatter.currencyCode = "IDR"
+            return numberFormatter.string(from: NSNumber(floatLiteral: getLastPrice())) ?? "Rp0.00"
         }
     
 }
