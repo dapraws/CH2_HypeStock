@@ -35,7 +35,7 @@ struct StockDetailsView: View {
                     Text("Buy")
                         .frame(maxHeight: 115.5/2)
                     Divider()
-                    Text("123")
+                    Text(String(stock.buyCount))
                         .frame(maxHeight: 115.5/2)
                 }
                 .frame(maxWidth: .infinity)
@@ -44,7 +44,7 @@ struct StockDetailsView: View {
                     Text("Sell")
                         .frame(maxHeight: 115.5/2)
                     Divider()
-                    Text("123")
+                    Text(String(stock.sellCount))
                         .frame(maxHeight: 115.5/2)
                 }
                 .frame(maxWidth: .infinity)
@@ -56,7 +56,7 @@ struct StockDetailsView: View {
                 Text("Last Dividend")
                     .frame(maxHeight: 115.5/2)
                 Divider()
-                Text("100 / unit")
+                Text(moneyFormat(money: stock.lastDividend) + " / unit")
                     .frame(maxHeight: 115.5/2)
             }
             .frame(maxWidth: .infinity)
@@ -69,6 +69,7 @@ struct StockDetailsView: View {
             
         }
         .ignoresSafeArea()
+        
     }
 }
 

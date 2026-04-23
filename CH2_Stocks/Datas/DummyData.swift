@@ -19,16 +19,56 @@ func makePriceHistory(startPrice: Double) -> [PriceHistory] {
     return history
 }
 
+func generateCount()-> Int{
+    return Int.random(in: 1000 ... 99999999)
+}
+func generateDividend()-> Double{
+    return Double.random(in: 1 ... 9999)
+}
+
+func sortedStocks(stockList: [Stock], filter: ListFilter) -> [Stock] {
+    switch filter {
+    case .all:
+        return stockList
+    case .mostBuy:
+        return stockList.sorted { $0.buyCount > $1.buyCount }
+    case .mostSell:
+        return stockList.sorted { $0.sellCount > $1.sellCount }
+    case .mostDividend:
+        return stockList.sorted { $0.lastDividend > $1.lastDividend }
+    case .influencerChoice:
+        return stockList.filter {stock in
+            Influencer.sampleInfluencers.contains {$0.stockChoices.contains{$0.symbol == stock.symbol} == true}
+            
+        }
+    }
+}
+
+struct DummyData{
+    static let sampleStocks: [Stock] = [
+        Stock(symbol: "BBCA", name: "Bank Central Asia",      priceHistory: makePriceHistory(startPrice: 9500), buyCount: generateCount(), sellCount: generateCount(), lastDividend: generateDividend()),
+        Stock(symbol: "TLKM", name: "Telkom Indonesia",       priceHistory: makePriceHistory(startPrice: 3700), buyCount: generateCount(), sellCount: generateCount(), lastDividend: generateDividend()),
+        Stock(symbol: "ASII", name: "Astra International",    priceHistory: makePriceHistory(startPrice: 5200), buyCount: generateCount(), sellCount: generateCount(), lastDividend: generateDividend()),
+        Stock(symbol: "BMRI", name: "Bank Mandiri",           priceHistory: makePriceHistory(startPrice: 6100), buyCount: generateCount(), sellCount: generateCount(), lastDividend: generateDividend()),
+        Stock(symbol: "GOTO", name: "GoTo Gojek Tokopedia",   priceHistory: makePriceHistory(startPrice: 68), buyCount: generateCount(), sellCount: generateCount(), lastDividend: generateDividend()),
+        Stock(symbol: "BYAN", name: "Bayan Resources",        priceHistory: makePriceHistory(startPrice: 22000), buyCount: generateCount(), sellCount: generateCount(), lastDividend: generateDividend()),
+        Stock(symbol: "INDF", name: "Indofood Sukses Makmur", priceHistory: makePriceHistory(startPrice: 7300), buyCount: generateCount(), sellCount: generateCount(), lastDividend: generateDividend()),
+        Stock(symbol: "UNVR", name: "Unilever Indonesia",     priceHistory: makePriceHistory(startPrice: 2100), buyCount: generateCount(), sellCount: generateCount(), lastDividend: generateDividend()),
+    ]
+    
+   
+}
+
 extension Stock {
     static let sampleStocks: [Stock] = [
-        Stock(symbol: "BBCA", name: "Bank Central Asia",      priceHistory: makePriceHistory(startPrice: 9500)),
-        Stock(symbol: "TLKM", name: "Telkom Indonesia",       priceHistory: makePriceHistory(startPrice: 3700)),
-        Stock(symbol: "ASII", name: "Astra International",    priceHistory: makePriceHistory(startPrice: 5200)),
-        Stock(symbol: "BMRI", name: "Bank Mandiri",           priceHistory: makePriceHistory(startPrice: 6100)),
-        Stock(symbol: "GOTO", name: "GoTo Gojek Tokopedia",   priceHistory: makePriceHistory(startPrice: 68)),
-        Stock(symbol: "BYAN", name: "Bayan Resources",        priceHistory: makePriceHistory(startPrice: 22000)),
-        Stock(symbol: "INDF", name: "Indofood Sukses Makmur", priceHistory: makePriceHistory(startPrice: 7300)),
-        Stock(symbol: "UNVR", name: "Unilever Indonesia",     priceHistory: makePriceHistory(startPrice: 2100)),
+        Stock(symbol: "BBCA", name: "Bank Central Asia",      priceHistory: makePriceHistory(startPrice: 9500), buyCount: generateCount(), sellCount: generateCount(), lastDividend: generateDividend()),
+        Stock(symbol: "TLKM", name: "Telkom Indonesia",       priceHistory: makePriceHistory(startPrice: 3700), buyCount: generateCount(), sellCount: generateCount(), lastDividend: generateDividend()),
+        Stock(symbol: "ASII", name: "Astra International",    priceHistory: makePriceHistory(startPrice: 5200), buyCount: generateCount(), sellCount: generateCount(), lastDividend: generateDividend()),
+        Stock(symbol: "BMRI", name: "Bank Mandiri",           priceHistory: makePriceHistory(startPrice: 6100), buyCount: generateCount(), sellCount: generateCount(), lastDividend: generateDividend()),
+        Stock(symbol: "GOTO", name: "GoTo Gojek Tokopedia",   priceHistory: makePriceHistory(startPrice: 68), buyCount: generateCount(), sellCount: generateCount(), lastDividend: generateDividend()),
+        Stock(symbol: "BYAN", name: "Bayan Resources",        priceHistory: makePriceHistory(startPrice: 22000), buyCount: generateCount(), sellCount: generateCount(), lastDividend: generateDividend()),
+        Stock(symbol: "INDF", name: "Indofood Sukses Makmur", priceHistory: makePriceHistory(startPrice: 7300), buyCount: generateCount(), sellCount: generateCount(), lastDividend: generateDividend()),
+        Stock(symbol: "UNVR", name: "Unilever Indonesia",     priceHistory: makePriceHistory(startPrice: 2100), buyCount: generateCount(), sellCount: generateCount(), lastDividend: generateDividend()),
     ]
 }
 

@@ -8,18 +8,20 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var selectedTab: Int = 1
+    @State private var stockFilter: ListFilter = .all
     var body: some View {
-        TabView {
-            Tab("Home", systemImage: "house.fill") {
-                HomeView()
+        TabView (selection: $selectedTab) {
+            Tab("Home", systemImage: "house.fill", value: 1) {
+                HomeView(selectedTab: $selectedTab, stockFilter: $stockFilter)
             }
-            Tab("Stocks", systemImage: "chart.line.uptrend.xyaxis") {
-                StockListView()
+            Tab("Stocks", systemImage: "chart.line.uptrend.xyaxis", value: 2) {
+                StockListView(stockFilter: stockFilter)
             }
-            Tab("Portfolio", systemImage: "briefcase.fill") {
+            Tab("Portfolio", systemImage: "briefcase.fill", value: 3) {
                 PlaceholderTab(title: "Portfolio", icon: "briefcase.fill")
             }
-            Tab(role: .search) {
+            Tab(value: 4, role: .search) {
                 PlaceholderTab(title: "Search", icon: "magnifyingglass")
             }
         }

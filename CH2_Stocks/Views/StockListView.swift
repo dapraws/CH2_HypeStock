@@ -10,7 +10,8 @@ import SwiftUI
 struct StockListView: View {
     
     @State var listTitle: String = "Stock List"
-    @State var stocks: [Stock] = Stock.sampleStocks
+    @State var stocks: [Stock] = sortedStocks(stockList: Stock.sampleStocks, filter: .all)
+    @State var stockFilter: ListFilter = .all
     
     var body: some View {
         NavigationStack{
@@ -61,6 +62,7 @@ struct StockListView: View {
                 .listStyle(.plain)
             }
             .ignoresSafeArea()
+            
         }
         
     }
