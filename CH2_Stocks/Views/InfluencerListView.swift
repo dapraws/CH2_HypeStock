@@ -20,11 +20,11 @@ struct InfluencerListView: View {
         }
     }
     var body: some View {
-        VStack{
+        VStack {
             Text("Best Trader Influencer")
-                .frame(maxWidth: .infinity, maxHeight: 120, alignment: .center)
-                .background(.yellow)
-                .font(.system(size: 30))
+                .frame(maxWidth: .infinity, maxHeight: 120, alignment: .leading)
+                .background()
+                .font(.system(size: 50))
                 .bold()
                 .padding(.top, 50)
             List {
@@ -33,7 +33,7 @@ struct InfluencerListView: View {
                         NavigationLink(destination: InfluencerDetailView(influencer: influencer)) {
                             InfluencerRow(rank: index + 1, influencer: influencer)
                         }
-                        .listRowBackground(Color.white)
+                        .listRowBackground(Color.appBackground)
                     }
                 }
             }
@@ -54,7 +54,7 @@ struct InfluencerRow: View {
             
             Text("#\(rank)")
                 .font(.system(size: 12, weight: .semibold))
-                .foregroundColor(.tertiaryText)
+                .foregroundColor(.secondaryText)
                 .frame(width: 24, alignment: .center)
             
             AvatarView(initials: influencer.avatarInitials, color: influencer.avatarColor, size: 44)
@@ -82,6 +82,7 @@ struct InfluencerRow: View {
             }
         }
         .padding(.vertical, Spacing.xs)
+        .background()
     }
 }
 
