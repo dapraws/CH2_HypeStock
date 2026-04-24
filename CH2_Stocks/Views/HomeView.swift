@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct HomeView: View {
-    
-    @State var totalProfit: Double = 1_250_000
+    @State var totalProfit: Double = 1250000
     @Binding var selectedTab: Int
     @Binding var stockFilter: ListFilter
+    
     let allStocks = Stock.sampleStocks
     
     var bestStock: Stock? {
@@ -24,46 +24,55 @@ struct HomeView: View {
             .min(by: { $0.getPercentage() < $1.getPercentage() })
     }
     
-    var profitText: String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.groupingSeparator = "."
-        let number = formatter.string(from: NSNumber(value: abs(totalProfit))) ?? "0"
-        return "Rp\(number)"
-    }
-    
     var body: some View {
         NavigationStack {
             ZStack {
                 Color.appBackground.ignoresSafeArea()
                 
-                ScrollView {
-                    VStack(spacing: Spacing.lg) {
-                        ProfitHeader(profitText: profitText, isPositive: totalProfit >= 0)
-                        
-                        HStack(spacing: Spacing.sm) {
-                            if let best = bestStock {
-                                StockMiniCard(label: "Best Pick", stock: best, color: .stockGreen)
-                            }
-                            if let worst = worstStock {
-                                StockMiniCard(label: "Worst Pick", stock: worst, color: .stockRed)
+                VStack(alignment: .leading, spacing: Spacing.lg) {
+                    
+                    ProfitCard(totalProfit: totalProfit)
+                    
+                    if bestStock != nil || worstStock != nil {
+                        VStack(alignment: .leading, spacing: Spacing.sm) {
+                            SectionHeader(title: "Today's Picks")
+                            HStack(spacing: Spacing.sm) {
+                                if let best = bestStock {
+                                    StockMiniCard(label: "Best Pick", stock: best, color: .stockGreen)
+                                }
+                                if let worst = worstStock {
+                                    StockMiniCard(label: "Worst Pick", stock: worst, color: .stockRed)
+                                }
                             }
                         }
-                        
+                    }
+                    
+                    // --- Menu grid ---
+                    VStack(alignment: .leading, spacing: Spacing.sm) {
+                        SectionHeader(title: "Explore")
                         MenuGrid(selectedTab: $selectedTab, stockFilter: $stockFilter)
                     }
-                    .padding(.horizontal, Spacing.md)
-                    .padding(.bottom, Spacing.xxl)
                 }
+                .padding(.horizontal, Spacing.md)
+                .padding(.vertical, Spacing.lg)
+                
             }
             .navigationBarHidden(true)
         }
     }
 }
 
-struct ProfitHeader: View {
-    let profitText: String
-    let isPositive: Bool
+struct ProfitCard: View {
+    let totalProfit: Double
+    
+    var isPositive: Bool { totalProfit >= 0 }
+    
+    var profitText: String {
+        let f = NumberFormatter()
+        f.numberStyle = .decimal
+        f.groupingSeparator = "."
+        return "Rp\(f.string(from: NSNumber(value: abs(totalProfit))) ?? "0")"
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
@@ -74,11 +83,10 @@ struct ProfitHeader: View {
             
             HStack(alignment: .firstTextBaseline, spacing: Spacing.xs) {
                 Text(profitText)
-                    .font(.system(size: 38, weight: .bold, design: .rounded))
+                    .font(.system(size: 36, weight: .bold, design: .rounded))
                     .foregroundColor(isPositive ? .stockGreen : .stockRed)
-                
                 Image(systemName: isPositive ? "arrow.up.right" : "arrow.down.right")
-                    .font(.system(size: 20, weight: .bold))
+                    .font(.system(size: 18, weight: .bold))
                     .foregroundColor(isPositive ? .stockGreen : .stockRed)
             }
             
@@ -99,130 +107,131 @@ struct StockMiniCard: View {
     let color: Color
     
     var body: some View {
-        VStack(alignment: .leading, spacing: Spacing.xs) {
+        VStack(alignment: .leading, spacing: Spacing.sm) {
             Text(label.uppercased())
                 .font(.system(size: 10, weight: .semibold))
                 .foregroundColor(.secondaryText)
                 .tracking(0.8)
             
-            Text(stock.symbol)
-                .font(.system(size: 20, weight: .semibold, design: .monospaced))
-                .foregroundColor(.primaryText)
-            
-            Text(stock.name)
-                .font(.system(size: 11))
-                .foregroundColor(.secondaryText)
-                .lineLimit(1)
+            HStack(spacing: Spacing.sm) {
+                StockLogo(symbol: stock.symbol, size: 36)
+                
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(stock.symbol)
+                        .font(.system(size: 15, weight: .bold, design: .monospaced))
+                        .foregroundColor(.primaryText)
+                    Text(stock.name)
+                        .font(.system(size: 11))
+                        .foregroundColor(.secondaryText)
+                        .lineLimit(1)
+                }
+            }
             
             Spacer()
             
-            HStack(spacing: 3) {
-                Image(systemName: stock.getStatus().arrowIcon)
-                    .font(.system(size: 10, weight: .bold))
-                Text(String(format: "%.2f%%", abs(stock.getPercentage())))
-                    .font(.system(size: 11, weight: .semibold))
-            }
-            .foregroundColor(.white)
-            .padding(.horizontal, Spacing.sm)
-            .padding(.vertical, Spacing.xs)
-            .background(color)
-            .cornerRadius(Radius.sm)
+            PriceBadge(percentage: abs(stock.getPercentage()), status: stock.getStatus())
         }
         .padding(Spacing.md)
         .frame(maxWidth: .infinity, minHeight: 110, alignment: .leading)
+        .fixedSize(horizontal: false, vertical: true)
         .background(Color.cardBackground)
         .cornerRadius(Radius.lg)
     }
 }
 
 struct MenuGrid: View {
+    @Binding var selectedTab: Int
+    @Binding var stockFilter: ListFilter
     
     struct MenuItem: Identifiable {
         let id    = UUID()
         let title: String
-        let icon:  String
         let color: Int
     }
-    @Binding var selectedTab: Int
-    @Binding var stockFilter: ListFilter
+    
     let items: [MenuItem] = [
-        MenuItem(title: "Best Trader Influencer", icon: "person.2.fill", color: 0xFFD60A),
-        MenuItem(title: "Influencer Stock Choice", icon: "star.fill", color: 0x007AFF),
-        MenuItem(title: "Most Buy Stocks", icon: "arrow.up.circle.fill", color: 0x34C759),
-        MenuItem(title: "Most Sell Stocks", icon: "arrow.down.circle.fill", color: 0xFF3B30),
-        MenuItem(title: "Upcoming IPO", icon: "sparkles", color: 0xAF52DE),
-        MenuItem(title: "Highest Dividend", icon: "chart.bar.fill", color: 0xFF9500),
+        MenuItem(title: "Best Trader Influencer", color: 0x007AFF),
+        MenuItem(title: "Influencer Stock Choice", color: 0x007AFF),
+        MenuItem(title: "Most Buy Stocks", color: 0x007AFF),
+        MenuItem(title: "Most Sell Stocks", color: 0x007AFF),
+        MenuItem(title: "Upcoming IPO", color: 0x007AFF),
+        MenuItem(title: "Highest Dividend", color: 0x007AFF),
     ]
     
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
     
     var body: some View {
-        VStack(alignment: .leading, spacing: Spacing.md) {
-            Text("Explore")
-                .font(.system(size: 22, weight: .bold))
-                .foregroundColor(.primaryText)
-            
-            LazyVGrid(columns: columns, spacing: Spacing.sm) {
-                ForEach(items) { item in
-                    if item.title == "Best Trader Influencer" {
-                        NavigationLink(destination: InfluencerListView()) {
-                            MenuItemCard(item: item, hasArrow: true)
-                        }
-                        .buttonStyle(.plain)
-                    } else if item.title == "Upcoming IPO"{
-                        NavigationLink(destination: IpoListView()) {
-                            MenuItemCard(item: item, hasArrow: true)
-                        }
-                        .buttonStyle(.plain)
-                    }else if item.title == "Most Buy Stocks"{
-                        Button{
-                            selectedTab = 2
-                            stockFilter = .mostBuy
-                        }label: {
-                            MenuItemCard(item: item, hasArrow: true)
-                        }
-//                        NavigationLink(destination: StockListView()) {
-//                            MenuItemCard(item: item, hasArrow: true)
-//                        }
-//                        .buttonStyle(.plain)
-                    }
-                    else{
-                        MenuItemCard(item: item, hasArrow: false)
-                    }
-                }
+        LazyVGrid(columns: columns, spacing: Spacing.sm) {
+            ForEach(items) { item in
+                menuButton(for: item)
             }
+        }
+    }
+    
+    // Returns the right button type for each menu item
+    @ViewBuilder
+    func menuButton(for item: MenuItem) -> some View {
+        switch item.title {
+        case "Best Trader Influencer":
+            NavigationLink(destination: InfluencerListView()) {
+                MenuItemCard(item: item)
+            }.buttonStyle(.plain)
+            
+        case "Upcoming IPO":
+            NavigationLink(destination: IpoListView()) {
+                MenuItemCard(item: item)
+            }.buttonStyle(.plain)
+            
+        case "Most Buy Stocks":
+            Button {
+                stockFilter = .mostBuy
+                selectedTab = 2
+            } label: {
+                MenuItemCard(item: item)
+            }.buttonStyle(.plain)
+            
+        case "Most Sell Stocks":
+            Button {
+                stockFilter = .mostSell
+                selectedTab = 2
+            } label: {
+                MenuItemCard(item: item)
+            }.buttonStyle(.plain)
+            
+        case "Highest Dividend":
+            Button {
+                stockFilter = .mostDividend
+                selectedTab = 2
+            } label: {
+                MenuItemCard(item: item)
+            }.buttonStyle(.plain)
+            
+        default:
+            MenuItemCard(item: item)
         }
     }
 }
 
 struct MenuItemCard: View {
     let item: MenuGrid.MenuItem
-    let hasArrow: Bool
     
     var body: some View {
-        HStack(spacing: Spacing.sm) {
+        VStack(alignment: .leading, spacing: Spacing.sm) {
             Text(item.title)
-                .font(.system(size: 16))
-                .fontWeight(.semibold)
+                .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(.primaryText)
                 .multilineTextAlignment(.leading)
                 .fixedSize(horizontal: false, vertical: true)
-            
-            Spacer()
-            
-            if hasArrow {
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 11, weight: .semibold))
-                    .foregroundColor(.tertiaryText)
-            }
         }
         .padding(Spacing.md)
-        .frame(maxWidth: .infinity, minHeight: 100, alignment: .leading)
-        .background(Color(hex: item.color).opacity(0.15))
+        .frame(maxWidth: .infinity, minHeight: 90, alignment: .leading)
+        .background(Color.cardBackground)
         .cornerRadius(Radius.lg)
     }
 }
 
+
+
 #Preview {
-//    HomeView()
+    ContentView()
 }

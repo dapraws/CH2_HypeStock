@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
-
+ 
 struct ContentView: View {
     @State private var selectedTab: Int = 1
     @State private var stockFilter: ListFilter = .all
+ 
     var body: some View {
-        TabView (selection: $selectedTab) {
+        TabView(selection: $selectedTab) {
             Tab("Home", systemImage: "house.fill", value: 1) {
                 HomeView(selectedTab: $selectedTab, stockFilter: $stockFilter)
             }
@@ -28,24 +29,21 @@ struct ContentView: View {
         .tint(.stockGreen)
     }
 }
-
+ 
 struct PlaceholderTab: View {
     let title: String
     let icon:  String
-    
+ 
     var body: some View {
         ZStack {
             Color.appBackground.ignoresSafeArea()
-            
             VStack(spacing: Spacing.sm) {
                 Image(systemName: icon)
-                    .font(.system(size: 36))
+                    .font(.title)
                     .foregroundColor(.secondaryText)
-                
                 Text(title)
                     .font(.system(size: 22, weight: .bold))
                     .foregroundColor(.primaryText)
-                
                 Text("Coming soon")
                     .font(.system(size: 14))
                     .foregroundColor(.secondaryText)
@@ -53,7 +51,8 @@ struct PlaceholderTab: View {
         }
     }
 }
-
+ 
 #Preview {
     ContentView()
 }
+
