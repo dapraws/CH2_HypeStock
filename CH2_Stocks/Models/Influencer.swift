@@ -20,6 +20,8 @@ struct Influencer: Identifiable {
     var avatarInitials: String
     var avatarColor: Int
     
+    var imageName: String?
+    
     var followersText: String {
         if followers >= 1000000 {
             return String(format: "%.1fM", Double(followers) / 1000000)

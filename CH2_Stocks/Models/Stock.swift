@@ -16,7 +16,7 @@ struct Stock: Identifiable {
     var buyCount: Int = 0
     var sellCount: Int = 0
     var lastDividend: Double = 0
-    
+    var imageName: String { symbol }
     
     func getOpenPrice() -> Double {
         for i in 0..<priceHistory.count {
