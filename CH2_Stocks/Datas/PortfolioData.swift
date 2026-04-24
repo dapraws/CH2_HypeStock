@@ -10,7 +10,7 @@ internal import Combine
 
 
 class PortfolioData: ObservableObject {
-    @Published var portfolios: [Portfolio] = []
+    @Published var portfolios: [Portfolio] = [Portfolio(stock: Stock.sampleStocks[0], quantity: 100, date: Date())]
     func buy(stock: Stock, quantity: Int, date: Date = Date()) {
         self.portfolios.append(Portfolio(stock: stock, quantity: quantity, date: date))
     }
@@ -18,11 +18,42 @@ class PortfolioData: ObservableObject {
         self.portfolios.append(Portfolio(stock: stock, quantity: quantity * -1, date: date))
     }
     
+    func getValueDict() -> [String:Double]{
+        var res : [String:Double] = [:]
+        
+        for portfolio in portfolios {
+            if var existing = res[portfolio.stock.symbol] {
+                existing += Double(portfolio.quantity) * portfolio.stock.getLastPrice()
+                res[portfolio.stock.symbol] = existing
+            } else {
+                res[portfolio.stock.symbol] = Double(portfolio.quantity) * portfolio.stock.getLastPrice()
+            }
+        }
+        return res
+    }
     
-    func getExistingProfit() -> Double{
+    func calculatePriceDifferencePercentage(stockSymbol: String) -> Double{
+        var res: Double = 0.0
+        var sumPrice: Double = 0.0
+        var count: Int = 0
+        let filteredPortfolios: [Portfolio] = portfolios.filter{$0.stock.symbol == stockSymbol}
+        for item in filteredPortfolios{
+            sumPrice += item.stock.getLastPrice()
+            count += 1
+        }
+        res = (sumPrice / Double(count)) - filteredPortfolios[0].stock.getLastPrice()
+        res = res / getExistingProfit(stockSymbol: stockSymbol)
+        
+        return res
+        
+    }
+    
+    
+    func getExistingProfit(stockSymbol: String = "") -> Double{
         var res: Double = 0.0
         var existingStock: [Portfolio] = []
-        for item in portfolios {
+        let filteredPortfolios: [Portfolio] = stockSymbol == "" ? portfolios.filter{$0.stock.symbol == stockSymbol}: portfolios
+        for item in filteredPortfolios {
             if item.quantity >= 0 {
                 existingStock.append(item)
             } else {
