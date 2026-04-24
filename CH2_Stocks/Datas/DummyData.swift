@@ -81,7 +81,8 @@ extension Influencer {
             stockPicks: 58,
             stockChoices: [Stock.sampleStocks[0], Stock.sampleStocks[3], Stock.sampleStocks[7]],
             avatarInitials: "BH",
-            avatarColor: 0xFF3B30
+            avatarColor: 0xFF3B30,
+            imageName: "BudiHartono"
         ),
         Influencer(
             name: "Rizky Pratama",
