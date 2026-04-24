@@ -10,7 +10,7 @@ internal import Combine
 
 
 class PortfolioData: ObservableObject {
-    @Published var portfolios: [Portfolio] = [Portfolio(stock: Stock.sampleStocks[0], quantity: 100, date: Date())]
+    @Published var portfolios: [Portfolio] = [Portfolio(stock: Stock.sampleStocks[0], quantity: 100, date: DateHelper.getDateFromString("2026-04-05"))]
     func buy(stock: Stock, quantity: Int, date: Date = Date()) {
         self.portfolios.append(Portfolio(stock: stock, quantity: quantity, date: date))
     }
@@ -38,10 +38,12 @@ class PortfolioData: ObservableObject {
         var count: Int = 0
         let filteredPortfolios: [Portfolio] = portfolios.filter{$0.stock.symbol == stockSymbol}
         for item in filteredPortfolios{
-            sumPrice += item.stock.getLastPrice()
+            sumPrice += item.price * Double(item.quantity)
             count += 1
         }
-        res = (sumPrice / Double(count)) - filteredPortfolios[0].stock.getLastPrice()
+        print(getExistingProfit())
+        res =  filteredPortfolios[0].stock.getLastPrice() - (sumPrice / Double(count))
+        print(String(res) + " | " + String(getExistingProfit(stockSymbol: stockSymbol)))
         res = res / getExistingProfit(stockSymbol: stockSymbol)
         
         return res
@@ -54,7 +56,7 @@ class PortfolioData: ObservableObject {
         var existingStock: [Portfolio] = []
         let filteredPortfolios: [Portfolio] = stockSymbol == "" ? portfolios.filter{$0.stock.symbol == stockSymbol}: portfolios
         for item in filteredPortfolios {
-            if item.quantity >= 0 {
+            if item.quantity > 0 {
                 existingStock.append(item)
             } else {
                 var remaining = -item.quantity

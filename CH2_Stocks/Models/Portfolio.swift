@@ -13,6 +13,6 @@ struct Portfolio: Identifiable {
     let quantity: Int
     let date: Date
     var price: Double{
-        return stock.priceHistory.min(by: { $0.date < $1.date })?.price ?? 0
+        return stock.priceHistory.filter{ $0.date <= date}.last?.price ?? 0
     }
 }
