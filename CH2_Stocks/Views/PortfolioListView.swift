@@ -10,7 +10,8 @@ import SwiftUI
 struct PortfolioListView: View {
     @State var totalProfit: Double = 1_250_000
     @StateObject var portfolioData = PortfolioData()
-    let allStocks = Stock.sampleStocks
+    @Binding var stockFilter: ListFilter
+    let allStocks = StockListViewModel().allStocks
     
     var bestStock: Stock? {
         allStocks.filter { $0.getStatus() == .up }
@@ -35,14 +36,14 @@ struct PortfolioListView: View {
             VStack{
                 
                     VStack(spacing: Spacing.lg) {
-                        ProfitHeader(profitText: moneyFormat(money: portfolioData.getExistingProfit()), isPositive: totalProfit >= 0)
+                        ProfitCard(totalProfit: portfolioData.getExistingProfit())
                         
                         HStack(spacing: Spacing.sm) {
                             if let best = bestStock {
-                                StockMiniCard(label: "Best Pick", stock: best, color: .stockGreen)
+                                StockMiniCard(label: "Best Pick", stock: best)
                             }
                             if let worst = worstStock {
-                                StockMiniCard(label: "Worst Pick", stock: worst, color: .stockRed)
+                                StockMiniCard(label: "Worst Pick", stock: worst)
                             }
                         }
                     }
@@ -63,9 +64,12 @@ struct PortfolioListView: View {
             }
             
         }
+        .onAppear(){
+            stockFilter = .all
+        }
     }
 }
 
 #Preview {
-    PortfolioListView()
+    PortfolioListView(stockFilter: .constant(.all))
 }

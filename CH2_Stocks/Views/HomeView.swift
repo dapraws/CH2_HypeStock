@@ -104,6 +104,9 @@ struct HomeView: View {
                 }
             }
             .navigationBarHidden(true)
+            .onAppear(){
+                stockFilter = .all
+            }
         }
     }
 }
