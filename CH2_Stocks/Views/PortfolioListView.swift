@@ -9,8 +9,12 @@ import SwiftUI
 
 struct PortfolioListView: View {
     @State var totalProfit: Double = 1_250_000
+    @State var isFormPresented = false
+    @State var isBuy: Bool = true
     @StateObject var portfolioData = PortfolioData()
     @Binding var stockFilter: ListFilter
+
+
     let allStocks = StockListViewModel().allStocks
     
     var bestStock: Stock? {
@@ -62,7 +66,12 @@ struct PortfolioListView: View {
                 }
                 .listStyle(.plain)
             }
+            AddPortfolioButtonComponentView(buyFunction: {isBuy = true; isFormPresented.toggle()}, sellFunction: {isBuy = false; isFormPresented.toggle()})
+                .offset(x: 305/2, y: 595/2)
             
+        }
+        .sheet(isPresented: $isFormPresented){
+            AddPortfolioFormSheetComponentView(isBuy: isBuy, isFormSheetPresented: $isFormPresented, portfolioData: portfolioData)
         }
         .onAppear(){
             stockFilter = .all
