@@ -16,35 +16,38 @@ struct StockItemComponentView: View {
     let stockColor: Color
     var body: some View {
             HStack{
-                VStack(alignment:.leading, spacing: 10){
+                StockLogo(symbol: stockSymbol, size: 44)
+
+                VStack(alignment: .leading, spacing: 3) {
                     Text(stockSymbol)
-                        .bold()
+                        .font(.appTicker)
+                        .foregroundColor(.primaryText)
                     Text(stockName)
+                        .font(.appCaption)
+                        .foregroundColor(.secondaryText)
                         .lineLimit(1)
-                        .truncationMode(.tail)
                 }
-                .frame(maxWidth: 150, alignment: .leading)
+                .frame(width: 60)
+                
                 Spacer()
-                Image(systemName: midSymbol)
-                    .frame(alignment: .center)
-                    .foregroundColor(stockColor)
-                    .font(.system(size: 40))
-                    .bold()
-                Spacer()
-                VStack(alignment:.trailing, spacing: 10){
-                    Text(stockValue)
-                    Text(stockPercentage)
-                        .frame(maxWidth: 90)
-                        .background(stockColor.opacity(0.7))
-                        .cornerRadius(25)
+                
+                VStack(spacing: 4) {
+                    HStack{
+                        Spacer()
+                        Text(stockValue)
+                            .font(.appSubheadline)
+                            .foregroundColor(.primaryText)
+                    }
+                    PriceBadge(percentage: 2.1, status: .up)
                 }
-                .frame(alignment: .trailing)
-                .bold()
-            }.font(.system(size: 20))
+            }
+            .padding(.vertical, Spacing.sm)
         
     }
 }
 
 #Preview {
-    StockItemComponentView(stockSymbol: "BBCA", stockName: "BCA", stockValue: moneyFormat(money: 6000), stockPercentage: "20", midSymbol: "", stockColor: Color.red)
+    VStack{
+        StockItemComponentView(stockSymbol: "BBCA", stockName: "BCA", stockValue: moneyFormat(money: 6000), stockPercentage: "20", midSymbol: "", stockColor: Color.red)
+    }
 }

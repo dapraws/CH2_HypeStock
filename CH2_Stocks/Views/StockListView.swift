@@ -59,17 +59,25 @@ struct StockListRow: View {
                     .foregroundColor(.secondaryText)
                     .lineLimit(1)
             }
-
+            .frame(width: 60)
             Spacer()
 
-            VStack(alignment: .trailing, spacing: 4) {
-                Text(stock.getLastPriceToString())
-                    .font(.appSubheadline)
-                    .foregroundColor(.primaryText)
+            ArrowDirection(status: stock.getStatus())
+            
+            Spacer()
+            
+
+            VStack(spacing: 4) {
+                HStack{
+                    Spacer()
+                    Text(stock.getLastPriceToString())
+                        .font(.appSubheadline)
+                        .foregroundColor(.primaryText)
+                }
                 PriceBadge(percentage: stock.getPercentage(), status: stock.getStatus())
             }
         }
-        .padding(.vertical, Spacing.sm + 2)
+        .padding(.vertical, Spacing.sm)
     }
 }
 
@@ -99,18 +107,33 @@ struct StockLogo: View {
     }
 }
 
+struct ArrowDirection: View {
+    let status: isStatus
+ 
+    var body: some View {
+        Image(systemName: status.arrowIcon)
+            .frame(alignment: .center)
+            .foregroundColor(status.color)
+            .font(.system(size: 21))
+            .bold()
+    }
+}
+
 struct PriceBadge: View {
     let percentage: Double
     let status: isStatus
  
     var body: some View {
-        Text(String(format: "%.2f%%", percentage))
-            .font(.system(size: 12, weight: .semibold))
-            .foregroundColor(.white)
-            .padding(.horizontal, 7)
-            .padding(.vertical, 3)
-            .background(status.color)
-            .cornerRadius(6)
+        HStack{
+            Spacer()
+            Text(String(format: "%.2f%%", percentage))
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundColor(.white)
+                .padding(.horizontal, 7)
+                .padding(.vertical, 3)
+                .background(status.color)
+                .cornerRadius(6)
+        }
     }
 }
 

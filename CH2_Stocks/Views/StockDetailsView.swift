@@ -151,7 +151,8 @@ struct SignalBanner: View {
  
             Spacer()
         }
-        .padding(Spacing.md)
+        .padding(.vertical, Spacing.md)
+        .padding(.horizontal, Spacing.lg)
         .background(signal.color.opacity(0.1))
         .cornerRadius(Radius.xl)
         .overlay(
