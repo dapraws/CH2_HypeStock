@@ -151,7 +151,7 @@ struct SignalBanner: View {
  
             Spacer()
         }
-        .padding(Spacing.lg)
+        .padding(Spacing.md)
         .background(signal.color.opacity(0.1))
         .cornerRadius(Radius.xl)
         .overlay(
@@ -174,8 +174,8 @@ struct BuySellPressureCard: View {
     var sellFraction: Double { 1.0 - buyFraction }
  
     func formatCount(_ count: Int) -> String {
-        if count >= 1_000_000 { return String(format: "%.1fM", Double(count) / 1_000_000) }
-        if count >= 1_000     { return String(format: "%.0fK", Double(count) / 1_000) }
+        if count >= 1000000 { return String(format: "%.1fM", Double(count) / 1_000_000) }
+        if count >= 1000     { return String(format: "%.0fK", Double(count) / 1_000) }
         return "\(count)"
     }
  

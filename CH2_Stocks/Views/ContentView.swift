@@ -20,7 +20,7 @@ struct ContentView: View {
                 StockListView(stockFilter: stockFilter)
             }
             Tab("Portfolio", systemImage: "briefcase.fill", value: 3) {
-                PlaceholderTab(title: "Portfolio", icon: "briefcase.fill")
+                PortfolioListView(stockFilter: $stockFilter)
             }
             Tab(value: 4, role: .search) {
                 PlaceholderTab(title: "Search", icon: "magnifyingglass")

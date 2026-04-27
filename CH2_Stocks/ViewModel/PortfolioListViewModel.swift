@@ -1,8 +1,8 @@
 //
-//  PortfolioData.swift
+//  PortfolioListViewModel.swift
 //  CH2_Stocks
 //
-//  Created by Amadeus on 23/04/26.
+//  Created by Muhammad Darrel Prawira on 27/04/26.
 //
 
 import Foundation
@@ -10,7 +10,7 @@ internal import Combine
 
 
 class PortfolioData: ObservableObject {
-    @Published var portfolios: [Portfolio] = [Portfolio(stock: Stock.sampleStocks[0], quantity: 100, date: DateHelper.getDateFromString("2026-04-05"))]
+    @Published var portfolios: [Portfolio] = [Portfolio(stock: StockListViewModel().allStocks[0], quantity: 100, date: DateHelper.getDateFromString("2026-04-05"))]
     func buy(stock: Stock, quantity: Int, date: Date = Date()) {
         self.portfolios.append(Portfolio(stock: stock, quantity: quantity, date: date))
     }
@@ -84,6 +84,4 @@ class PortfolioData: ObservableObject {
         return res
         
     }
-    
-    
 }
