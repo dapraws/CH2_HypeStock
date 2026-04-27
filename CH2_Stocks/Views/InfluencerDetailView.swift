@@ -30,8 +30,6 @@ struct InfluencerDetailView: View {
     }
 }
  
-// MARK: - Profile Card
- 
 struct ProfileCard: View {
     let influencer: Influencer
  
@@ -107,8 +105,6 @@ struct StatBox: View {
     }
 }
  
-// MARK: - Stock Picks Section
- 
 struct StockPicksSection: View {
     let stocks: [Stock]
  
@@ -129,8 +125,6 @@ struct StockPicksSection: View {
         }
     }
 }
- 
-// MARK: - Stock Pick Row
  
 struct StockPickRow: View {
     let stock: Stock
@@ -165,6 +159,6 @@ struct StockPickRow: View {
  
 #Preview {
     NavigationStack {
-        InfluencerDetailView(influencer: Influencer.sampleInfluencers[0])
+//        InfluencerDetailView(influencer: InfluencerListViewModel().influencers[0])
     }
 }

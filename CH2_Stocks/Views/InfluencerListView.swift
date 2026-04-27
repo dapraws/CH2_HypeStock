@@ -6,23 +6,15 @@
 //
 
 import SwiftUI
- 
+
 struct InfluencerListView: View {
-    @State var searchText = ""
- 
-    let influencers = Influencer.sampleInfluencers
- 
-    var filteredInfluencers: [Influencer] {
-        if searchText.isEmpty { return influencers }
-        return influencers.filter {
-            $0.name.localizedCaseInsensitiveContains(searchText) ||
-            $0.title.localizedCaseInsensitiveContains(searchText)
-        }
-    }
- 
+    @State private var searchText = ""
+
+    private let viewModel = InfluencerListViewModel()
+
     var body: some View {
         List {
-            ForEach(Array(filteredInfluencers.enumerated()), id: \.element.id) { index, influencer in
+            ForEach(Array(viewModel.filtered(by: searchText).enumerated()), id: \.element.id) { index, influencer in
                 NavigationLink(destination: InfluencerDetailView(influencer: influencer)) {
                     InfluencerRow(rank: index + 1, influencer: influencer)
                 }
@@ -39,50 +31,78 @@ struct InfluencerListView: View {
         .toolbar(.hidden, for: .tabBar)
     }
 }
-  
+
 struct InfluencerRow: View {
     let rank: Int
     let influencer: Influencer
- 
+
     var body: some View {
         HStack(spacing: Spacing.md) {
             Text("#\(rank)")
-                .font(.system(size: 12, weight: .semibold))
-                .foregroundColor(.secondary)
+                .font(.appBadge)
+                .foregroundColor(.secondaryText)
                 .frame(width: 24, alignment: .center)
- 
+
             InfluencerAvatar(
                 imageName: influencer.imageName,
                 initials: influencer.avatarInitials,
                 color: influencer.avatarColor,
                 size: 44
             )
- 
+
             VStack(alignment: .leading, spacing: 3) {
                 Text(influencer.name)
-                    .font(.system(size: 15, weight: .semibold))
+                    .font(.appSubheadline)
                     .foregroundColor(.primaryText)
                 Text(influencer.title)
-                    .font(.system(size: 13))
+                    .font(.appCaption)
                     .foregroundColor(.secondaryText)
                     .lineLimit(1)
             }
- 
+
             Spacer()
- 
+
             VStack(alignment: .trailing, spacing: 2) {
                 Text(influencer.followersText)
-                    .font(.system(size: 14, weight: .semibold))
+                    .font(.appSubheadline)
                     .foregroundColor(.primaryText)
                 Text("followers")
-                    .font(.system(size: 11))
+                    .font(.appBadge)
                     .foregroundColor(.secondaryText)
             }
         }
         .padding(.vertical, Spacing.sm)
     }
 }
+
+struct InfluencerAvatar: View {
+    let imageName: String?
+    let initials: String
+    let color: Int
+    let size: CGFloat
  
+    var body: some View {
+        Group {
+            if let name = imageName, UIImage(named: name) != nil {
+                Image(name)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: size, height: size)
+                    .clipShape(Circle())
+            } else {
+                ZStack {
+                    Circle()
+                        .fill(Color(hex: color).opacity(0.18))
+                        .frame(width: size, height: size)
+                    Text(initials)
+                        .font(.system(size: size * 0.35, weight: .bold, design: .rounded))
+                        .foregroundColor(Color(hex: color))
+                }
+            }
+        }
+    }
+}
+
 #Preview {
     NavigationStack {
         InfluencerListView()
