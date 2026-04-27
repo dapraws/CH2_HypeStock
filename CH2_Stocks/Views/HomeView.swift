@@ -58,6 +58,9 @@ struct HomeView: View {
                 
             }
             .navigationBarHidden(true)
+            .onAppear(){
+                stockFilter = .all
+            }
         }
     }
 }
@@ -201,6 +204,14 @@ struct MenuGrid: View {
         case "Highest Dividend":
             Button {
                 stockFilter = .mostDividend
+                selectedTab = 2
+            } label: {
+                MenuItemCard(item: item)
+            }.buttonStyle(.plain)
+            
+        case "Influencer Stock Choice":
+            Button {
+                stockFilter = .influencerChoice
                 selectedTab = 2
             } label: {
                 MenuItemCard(item: item)
