@@ -63,6 +63,10 @@ struct StockListViewModel {
         case .influencerChoice: return "Influencer Choice"
         }
     }
+    
+    func search(searchString: String) -> [Stock] {
+        return allStocks.filter{$0.name.lowercased().contains(searchString.lowercased()) || $0.symbol.lowercased().contains(searchString.lowercased())}
+    }
 }
 
 func makePriceHistory(startPrice: Double) -> [PriceHistory] {
