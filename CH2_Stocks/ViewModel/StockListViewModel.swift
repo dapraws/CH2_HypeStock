@@ -5,53 +5,12 @@
 //  Created by Amadeus on 22/04/26.
 //
 
+//
+//  StockListViewModel.swift
+//  CH2_Stocks
+//
+
 import Foundation
-
-struct StockListViewModel {
-    static let stocks: [Stock] = [
-        .init(symbol: "AAPL", name: "Apple Inc.", priceHistory: [
-            .init(date: DateHelper.getDateFromString("2026-04-21"), price: 4449550),
-            .init(date: DateHelper.getDateFromString("2026-04-20"), price: 4391440),
-            .init(date: DateHelper.getDateFromString("2026-04-17"), price: 4383960),
-            .init(date: DateHelper.getDateFromString("2026-04-16"), price: 4341970),
-            .init(date: DateHelper.getDateFromString("2026-04-15"), price: 4328540),
-            .init(date: DateHelper.getDateFromString("2026-04-14"), price: 4370700),
-            .init(date: DateHelper.getDateFromString("2026-04-13"), price: 4393990),
-
-            .init(date: DateHelper.getDateFromString("2026-04-10"), price: 4403340),
-            .init(date: DateHelper.getDateFromString("2026-04-09"), price: 4353190),
-            .init(date: DateHelper.getDateFromString("2026-04-08"), price: 4361010),
-            .init(date: DateHelper.getDateFromString("2026-04-07"), price: 4176900),
-            .init(date: DateHelper.getDateFromString("2026-04-06"), price: 4359820),
-            .init(date: DateHelper.getDateFromString("2026-04-02"), price: 4261050),
-            .init(date: DateHelper.getDateFromString("2026-04-01"), price: 4306610),
-
-            .init(date: DateHelper.getDateFromString("2026-03-31"), price: 4200700),
-            .init(date: DateHelper.getDateFromString("2026-03-30"), price: 4173670),
-            .init(date: DateHelper.getDateFromString("2026-03-27"), price: 4217190),
-            .init(date: DateHelper.getDateFromString("2026-03-26"), price: 4263090),
-            .init(date: DateHelper.getDateFromString("2026-03-25"), price: 4277200),
-            .init(date: DateHelper.getDateFromString("2026-03-24"), price: 4242350),
-            .init(date: DateHelper.getDateFromString("2026-03-23"), price: 4254760)
-        ])
-    ]
-    
-    func getListTitle(filter: ListFilter) -> String{
-        switch filter {
-        case .mostBuy:
-            return "Most Buy Stocks"
-        case .mostSell:
-            return "Most Sell Stocks"
-        case .mostDividend:
-            return "Most Dividend Stocks"
-        case .influencerChoice:
-            return "Influencer Choice Stocks"
-        default:
-            return "Stocks List"
-        }
-    }
-    
-}
 
 enum ListFilter {
     case all
@@ -59,4 +18,61 @@ enum ListFilter {
     case mostSell
     case mostDividend
     case influencerChoice
+}
+
+
+struct StockListViewModel {
+
+    let allStocks: [Stock] = [
+        Stock(symbol: "BBCA", name: "Bank Central Asia",      priceHistory: makePriceHistory(startPrice: 9500),  buyCount: Int.random(in: 1000...99999999), sellCount: Int.random(in: 1000...99999999), lastDividend: Double.random(in: 1...9999)),
+        Stock(symbol: "TLKM", name: "Telkom Indonesia",       priceHistory: makePriceHistory(startPrice: 3700),  buyCount: Int.random(in: 1000...99999999), sellCount: Int.random(in: 1000...99999999), lastDividend: Double.random(in: 1...9999)),
+        Stock(symbol: "ASII", name: "Astra International",    priceHistory: makePriceHistory(startPrice: 5200),  buyCount: Int.random(in: 1000...99999999), sellCount: Int.random(in: 1000...99999999), lastDividend: Double.random(in: 1...9999)),
+        Stock(symbol: "BMRI", name: "Bank Mandiri",           priceHistory: makePriceHistory(startPrice: 6100),  buyCount: Int.random(in: 1000...99999999), sellCount: Int.random(in: 1000...99999999), lastDividend: Double.random(in: 1...9999)),
+        Stock(symbol: "GOTO", name: "GoTo Gojek Tokopedia",   priceHistory: makePriceHistory(startPrice: 68),    buyCount: Int.random(in: 1000...99999999), sellCount: Int.random(in: 1000...99999999), lastDividend: Double.random(in: 1...9999)),
+        Stock(symbol: "BYAN", name: "Bayan Resources",        priceHistory: makePriceHistory(startPrice: 22000), buyCount: Int.random(in: 1000...99999999), sellCount: Int.random(in: 1000...99999999), lastDividend: Double.random(in: 1...9999)),
+        Stock(symbol: "INDF", name: "Indofood Sukses Makmur", priceHistory: makePriceHistory(startPrice: 7300),  buyCount: Int.random(in: 1000...99999999), sellCount: Int.random(in: 1000...99999999), lastDividend: Double.random(in: 1...9999)),
+        Stock(symbol: "UNVR", name: "Unilever Indonesia",     priceHistory: makePriceHistory(startPrice: 2100),  buyCount: Int.random(in: 1000...99999999), sellCount: Int.random(in: 1000...99999999), lastDividend: Double.random(in: 1...9999)),
+    ]
+
+    func stocks(for filter: ListFilter) -> [Stock] {
+        switch filter {
+        case .all:
+            return allStocks
+        case .mostBuy:
+            return allStocks.sorted { $0.buyCount > $1.buyCount }
+        case .mostSell:
+            return allStocks.sorted { $0.sellCount > $1.sellCount }
+        case .mostDividend:
+            return allStocks.sorted { $0.lastDividend > $1.lastDividend }
+        case .influencerChoice:
+            let influencerVM = InfluencerListViewModel()
+            return allStocks.filter { stock in
+                influencerVM.influencers.contains { influencer in
+                    influencer.stockChoices.contains { $0.symbol == stock.symbol }
+                }
+            }
+        }
+    }
+
+    func listTitle(for filter: ListFilter) -> String {
+        switch filter {
+        case .all:              return "Stocks"
+        case .mostBuy:          return "Most Buy Stocks"
+        case .mostSell:         return "Most Sell Stocks"
+        case .mostDividend:     return "Highest Dividend"
+        case .influencerChoice: return "Influencer Choice"
+        }
+    }
+}
+
+func makePriceHistory(startPrice: Double) -> [PriceHistory] {
+    var history: [PriceHistory] = []
+    var price = startPrice
+    for daysAgo in stride(from: 30 * 24, through: 0, by: -1) {
+        let date = Calendar.current.date(byAdding: .hour, value: -daysAgo, to: Date()) ?? Date()
+        let change = Double.random(in: -startPrice * 0.02 ... startPrice * 0.02)
+        price = max(price + change, 1)
+        history.append(PriceHistory(date: date, price: price))
+    }
+    return history
 }
