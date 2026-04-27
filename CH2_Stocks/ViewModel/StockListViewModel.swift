@@ -22,18 +22,18 @@ enum ListFilter {
 
 
 struct StockListViewModel {
-
+    
     let allStocks: [Stock] = [
-        Stock(symbol: "BBCA", name: "Bank Central Asia",      priceHistory: makePriceHistory(startPrice: 9500),  buyCount: Int.random(in: 1000...99999999), sellCount: Int.random(in: 1000...99999999), lastDividend: Double.random(in: 1...9999)),
-        Stock(symbol: "TLKM", name: "Telkom Indonesia",       priceHistory: makePriceHistory(startPrice: 3700),  buyCount: Int.random(in: 1000...99999999), sellCount: Int.random(in: 1000...99999999), lastDividend: Double.random(in: 1...9999)),
-        Stock(symbol: "ASII", name: "Astra International",    priceHistory: makePriceHistory(startPrice: 5200),  buyCount: Int.random(in: 1000...99999999), sellCount: Int.random(in: 1000...99999999), lastDividend: Double.random(in: 1...9999)),
-        Stock(symbol: "BMRI", name: "Bank Mandiri",           priceHistory: makePriceHistory(startPrice: 6100),  buyCount: Int.random(in: 1000...99999999), sellCount: Int.random(in: 1000...99999999), lastDividend: Double.random(in: 1...9999)),
-        Stock(symbol: "GOTO", name: "GoTo Gojek Tokopedia",   priceHistory: makePriceHistory(startPrice: 68),    buyCount: Int.random(in: 1000...99999999), sellCount: Int.random(in: 1000...99999999), lastDividend: Double.random(in: 1...9999)),
-        Stock(symbol: "BYAN", name: "Bayan Resources",        priceHistory: makePriceHistory(startPrice: 22000), buyCount: Int.random(in: 1000...99999999), sellCount: Int.random(in: 1000...99999999), lastDividend: Double.random(in: 1...9999)),
+        Stock(symbol: "APPL", name: "Apple Inc",priceHistory: makePriceHistory(startPrice: 2100),  buyCount: Int.random(in: 1000...99999999), sellCount: Int.random(in: 1000...99999999), lastDividend: Double.random(in: 1...9999)),
+        Stock(symbol: "BBCA", name: "Bank Central Asia", priceHistory: makePriceHistory(startPrice: 9500), buyCount: Int.random(in: 1000...99999999), sellCount: Int.random(in: 1000...99999999), lastDividend: Double.random(in: 1...9999)),
+        Stock(symbol: "TLKM", name: "Telkom Indonesia", priceHistory: makePriceHistory(startPrice: 3700), buyCount: Int.random(in: 1000...99999999), sellCount: Int.random(in: 1000...99999999), lastDividend: Double.random(in: 1...9999)),
+        Stock(symbol: "ASII", name: "Astra International", priceHistory: makePriceHistory(startPrice: 5200), buyCount: Int.random(in: 1000...99999999), sellCount: Int.random(in: 1000...99999999), lastDividend: Double.random(in: 1...9999)),
+        Stock(symbol: "BMRI", name: "Bank Mandiri", priceHistory: makePriceHistory(startPrice: 6100),  buyCount: Int.random(in: 1000...99999999), sellCount: Int.random(in: 1000...99999999), lastDividend: Double.random(in: 1...9999)),
+        Stock(symbol: "GOTO", name: "GoTo Gojek Tokopedia", priceHistory: makePriceHistory(startPrice: 68), buyCount: Int.random(in: 1000...99999999), sellCount: Int.random(in: 1000...99999999), lastDividend: Double.random(in: 1...9999)),
+        Stock(symbol: "BYAN", name: "Bayan Resources", priceHistory: makePriceHistory(startPrice: 22000), buyCount: Int.random(in: 1000...99999999), sellCount: Int.random(in: 1000...99999999), lastDividend: Double.random(in: 1...9999)),
         Stock(symbol: "INDF", name: "Indofood Sukses Makmur", priceHistory: makePriceHistory(startPrice: 7300),  buyCount: Int.random(in: 1000...99999999), sellCount: Int.random(in: 1000...99999999), lastDividend: Double.random(in: 1...9999)),
-        Stock(symbol: "UNVR", name: "Unilever Indonesia",     priceHistory: makePriceHistory(startPrice: 2100),  buyCount: Int.random(in: 1000...99999999), sellCount: Int.random(in: 1000...99999999), lastDividend: Double.random(in: 1...9999)),
     ]
-
+    
     func stocks(for filter: ListFilter) -> [Stock] {
         switch filter {
         case .all:
@@ -53,7 +53,7 @@ struct StockListViewModel {
             }
         }
     }
-
+    
     func listTitle(for filter: ListFilter) -> String {
         switch filter {
         case .all:              return "Stocks"
